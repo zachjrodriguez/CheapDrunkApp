@@ -67,25 +67,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="I'm Cheap!"
-        android:id="@+id/cheapButton"
-        android:layout_below="@+id/drinkType"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border"
-        android:textColor="@color/colorPrimary"
-        android:layout_alignParentLeft="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Drunk'm"
-        android:id="@+id/drunkButton"
-        android:layout_below="@+id/drinkType"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border"
-        android:textColor="@color/colorPrimary"
-        android:layout_alignRight="@+id/cheapButton"
-        android:layout_alignEnd="@+id/cheapButton"/>
+        android:text="Cheap"/>
 
     <LinearLayout
         android:id="@+id/innerLay"
