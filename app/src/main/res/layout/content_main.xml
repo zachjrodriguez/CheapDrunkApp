@@ -26,6 +26,16 @@
         android:layout_marginTop="2dp"
         android:layout_alignParentTop="true"/>
 
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:textColor="@color/colorAccent"
+        android:background="@color/colorRed"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/enterBudget" />
+
     <EditText
         android:id="@+id/enterBudget"
         android:layout_width="match_parent"
@@ -65,16 +75,35 @@
         android:background="@drawable/border"/>
 
     <Button
+        android:id="@+id/cheapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cheap"/>
+        android:text="Cheap"
+        android:layout_below="@id/drinkType"
+        android:background="@color/colorAmber"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"/>
+
+    <Button
+        android:id="@+id/drunkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Drunk'm"
+        android:background="@color/colorAmber"
+        android:layout_below="@id/drinkType"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="35dp"/>
 
     <LinearLayout
         android:id="@+id/innerLay"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bigborder"
+        android:layout_below="@id/cheapButton"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
