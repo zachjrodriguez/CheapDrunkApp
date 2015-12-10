@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/blue"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.lnj.teamdrink.cheapdrunkapp.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <TextView
+        android:id="@+id/welcomeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome"
+        android:textSize="25sp"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:textAlignment="0"
+        android:layout_marginTop="2dp"
+        android:layout_alignParentTop="true"/>
+
+    <EditText
+        android:id="@+id/enterBudget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="Enter a budget"
+        android:textSize="40sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/welcomeView"
+        android:background="@drawable/border"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:id="@+id/restaurantSelector"
+        android:layout_below="@+id/enterBudget"
+        android:layout_alignRight="@+id/enterBudget"
+        android:layout_alignEnd="@+id/enterBudget"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/border"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:id="@+id/drinkType"
+        android:layout_below="@+id/restaurantSelector"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/border"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I'm Cheap!"
+        android:id="@+id/cheapButton"
+        android:layout_below="@+id/drinkType"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Drunk'm"
+        android:id="@+id/drunkButton"
+        android:layout_below="@+id/drinkType"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignRight="@+id/cheapButton"
+        android:layout_alignEnd="@+id/cheapButton"/>
+
+    <LinearLayout
+        android:id="@+id/innerLay"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/results"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorBlack"
+            android:background="@color/colorAccent"/>
+    </LinearLayout>
+
+</RelativeLayout>
