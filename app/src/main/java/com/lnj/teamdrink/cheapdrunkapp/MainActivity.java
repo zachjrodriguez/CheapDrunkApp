@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* References to the list object, and the Database Helper */
     private List<Beverage> nDrinkList;
+    private List<Beverage> nleftOverDrinks;
     private DatabaseHelper nDBHelper;
 
     /**
@@ -165,16 +166,13 @@ public class MainActivity extends AppCompatActivity {
     public void calculateCheapest() {
         resultsView.setText("");
         budget = Double.parseDouble(budgetText);
-        double leftOver = budget;
+        Double leftOver = budget;
         int drinkCount = 0;
         Beverage cheapest = null;
         Beverage toCheck = null;
         determineType();
         nDrinkList = nDBHelper.getListDrinksByType(selectedType);
         if(nDrinkList.size() != 0) {
-            if(String.valueOf(nDrinkList.get(0).getPrice()) == null) {
-                nDrinkList.get(0).setPrice(4.50);
-            }
             cheapest = nDrinkList.get(0);
         }
         for( int i = 1; i < nDrinkList.size(); i++ ) {
@@ -192,11 +190,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         drinkCount = (int)(budget/cheapest.getPrice());
-        Toast.makeText(this, String.format("%d", drinkCount), Toast.LENGTH_SHORT).show();
-
         leftOver = leftOver - (cheapest.getPrice() * drinkCount);
 
-        resultsView.append("The cheapest is " + cheapest.getName() + " with a total of " + drinkCount);
+        resultsView.append("Okay, cheapest would be "+ drinkCount + " " + cheapest.getName() + "s");
+        resultsView.append("\nYou will still have " + String.format("$5.2f dollars left!", leftOver) );
 //        Integer size = nDrinkList.size();
 //        Toast.makeText(this, size.toString(), Toast.LENGTH_SHORT).show();
     }
@@ -211,15 +208,12 @@ public class MainActivity extends AppCompatActivity {
         budget = Double.parseDouble(budgetText);
         double leftOver = budget;
         int drinkCount = 0;
-        Beverage cheapest = null;
+        Beverage drunkest = null;
         Beverage toCheck = null;
         determineType();
         nDrinkList = nDBHelper.getListDrinksByType(selectedType);
         if(nDrinkList.size() != 0) {
-            if(String.valueOf(nDrinkList.get(0).getPrice()) == null) {
-                nDrinkList.get(0).setPrice(4.50);
-            }
-            cheapest = nDrinkList.get(0);
+            drunkest = nDrinkList.get(0);
         }
         for( int i = 1; i < nDrinkList.size(); i++ ) {
             if(nDrinkList.get(i) == null) {
@@ -229,18 +223,17 @@ public class MainActivity extends AppCompatActivity {
                 nDrinkList.get(i).setPrice(4.50);
             }
             toCheck = nDrinkList.get(i);
-            if( toCheck.getPrice() < cheapest.getPrice() ) {
-                cheapest = toCheck;
+            if( toCheck.getPrice() < drunkest.getPrice() ) {
+                drunkest = toCheck;
             }
 
         }
 
-        drinkCount = (int)(budget/cheapest.getPrice());
-        Toast.makeText(this, String.format("%d", drinkCount), Toast.LENGTH_SHORT).show();
+        drinkCount = (int)(budget/drunkest.getPrice());
+//        leftOver = leftOver - (cheapest.getPrice() * drinkCount);
+        Toast.makeText(this, String.format("%4.2f", leftOver), Toast.LENGTH_SHORT).show();
 
-        leftOver = leftOver - (cheapest.getPrice() * drinkCount);
-
-        resultsView.append("The cheapest is " + cheapest.getName() + " with a total of " + drinkCount);
+        resultsView.append("The cheapest is " + drunkest.getName() + " with a total of " + drinkCount);
     }
 
     public void determineType() {

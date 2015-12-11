@@ -113,6 +113,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * A method to return a list of beverages from
+     * the database.
+     *
+     * @return List of beverages
+     */
+    public List getListDrinksByCost(String left) {
+        Beverage beverage;
+        List<Beverage> drinkList = new ArrayList<>();
+        openDatabase();
+        Cursor cursor = nDatabase.rawQuery("SELECT * FROM PRODUCT WHERE TYPE =" + left, null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            Double price = cursor.getDouble(4);
+            if(cursor.isNull(4)) {
+                price = 4.50;
+            }
+            beverage = new Beverage(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getDouble(3), price);
+            drinkList.add(beverage);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        closeDatabase();
+        return drinkList;
+    }
+
+    /**
      * Called when the database is created for the first time. This is where the
      * creation of tables and the initial population of the tables should happen.
      *
