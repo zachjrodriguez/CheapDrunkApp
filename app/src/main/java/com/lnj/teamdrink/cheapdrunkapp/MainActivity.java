@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         leftOver = leftOver - (cheapest.getPrice() * drinkCount);
 
         resultsView.append("Okay, cheapest would be "+ drinkCount + " " + cheapest.getName() + "s");
-        resultsView.append("\nYou will still have " + String.format("$5.2f dollars left!", leftOver) );
+        resultsView.append("\nYou will still have " + String.format("$%5.2f dollars left!", leftOver) );
 //        Integer size = nDrinkList.size();
 //        Toast.makeText(this, size.toString(), Toast.LENGTH_SHORT).show();
     }
@@ -207,33 +207,38 @@ public class MainActivity extends AppCompatActivity {
         resultsView.setText("");
         budget = Double.parseDouble(budgetText);
         double leftOver = budget;
-        int drinkCount = 0;
+        int curCount = 0;
+        int checkCount = 0;
+        double currAlc = 0.0;
+        double checkAlc = 0.0;
         Beverage drunkest = null;
         Beverage toCheck = null;
         determineType();
         nDrinkList = nDBHelper.getListDrinksByType(selectedType);
         if(nDrinkList.size() != 0) {
             drunkest = nDrinkList.get(0);
+            curCount = (int)(budget/drunkest.getPrice());
+            currAlc = drunkest.getContent() * curCount;
         }
         for( int i = 1; i < nDrinkList.size(); i++ ) {
             if(nDrinkList.get(i) == null) {
                 return;
             }
-            if(String.valueOf(nDrinkList.get(i).getPrice()) == null) {
-                nDrinkList.get(i).setPrice(4.50);
-            }
+
             toCheck = nDrinkList.get(i);
-            if( toCheck.getPrice() < drunkest.getPrice() ) {
+            checkCount = (int)(budget/toCheck.getPrice());
+            checkAlc = toCheck.getContent() * checkCount;
+            if( checkAlc > currAlc ) {
                 drunkest = toCheck;
             }
 
         }
 
-        drinkCount = (int)(budget/drunkest.getPrice());
-//        leftOver = leftOver - (cheapest.getPrice() * drinkCount);
-        Toast.makeText(this, String.format("%4.2f", leftOver), Toast.LENGTH_SHORT).show();
+//     drinkCount = (int)(budget/cheapest.getPrice());
+        leftOver = leftOver - (drunkest.getPrice() * curCount);
 
-        resultsView.append("The cheapest is " + drunkest.getName() + " with a total of " + drinkCount);
+        resultsView.append("Okay, cheapest would be " + curCount + " " + drunkest.getName() + "s");
+        resultsView.append("\nYou will still have " + String.format("$%5.2f dollars left!", leftOver) );
     }
 
     public void determineType() {
