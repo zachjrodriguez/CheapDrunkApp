@@ -1,6 +1,7 @@
 package com.lnj.teamdrink.cheapdrunkapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     /* Variables to be used throughout the app to grab essential values */
     private String budgetText;
     private String selectedDrink;
+    private final static String[] names = { "Beer", "Shots", "Spirit", "Wine" };
+    private final static String[] types = { "'B'", "'SH'", "'S'", "'W'" };
+    private String selectedType;
+    private double budget;
 
     /* Reference to the Calculate & Reset Buttons */
     private Button cheapButton;
@@ -103,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         cheapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                determineType();
                 calculateCheapest();
             }
         });
@@ -111,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         drunkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                determineType();
                 calculateDrunkest();
             }
         });
@@ -124,8 +129,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        /** Database Testing */
+        /** Initializing Database */
         nDBHelper = new DatabaseHelper(this);
 
         File database = getApplicationContext().getDatabasePath(DatabaseHelper.DBNAME);
@@ -140,15 +144,18 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        String type = "'SH'";
-        nDrinkList = nDBHelper.getListDrinksByType(type);
-        Integer size = nDrinkList.size();
-        Log.w("MainActivity", size.toString());
-        Toast.makeText(this, size.toString(), Toast.LENGTH_SHORT).show();
+
+//        nDrinkList = nDBHelper.getListDrinksByType(type);
+//        Integer size = nDrinkList.size();
+//        Toast.makeText(this, size.toString(), Toast.LENGTH_SHORT).show();
 
         /** Actual to follow here*/
 
     }
+
+    /* ******************************* */
+    /* Methods called for calculations */
+    /* ******************************* */
 
     /**
      * Method to calculate the cheapest drink purchase
@@ -156,7 +163,42 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     public void calculateCheapest() {
+        resultsView.setText("");
+        budget = Double.parseDouble(budgetText);
+        double leftOver = budget;
+        int drinkCount = 0;
+        Beverage cheapest = null;
+        Beverage toCheck = null;
+        determineType();
+        nDrinkList = nDBHelper.getListDrinksByType(selectedType);
+        if(nDrinkList.size() != 0) {
+            if(String.valueOf(nDrinkList.get(0).getPrice()) == null) {
+                nDrinkList.get(0).setPrice(4.50);
+            }
+            cheapest = nDrinkList.get(0);
+        }
+        for( int i = 1; i < nDrinkList.size(); i++ ) {
+            if(nDrinkList.get(i) == null) {
+                return;
+            }
+            if(String.valueOf(nDrinkList.get(i).getPrice()) == null) {
+                nDrinkList.get(i).setPrice(4.50);
+            }
+            toCheck = nDrinkList.get(i);
+            if( toCheck.getPrice() < cheapest.getPrice() ) {
+                cheapest = toCheck;
+            }
 
+        }
+
+        drinkCount = (int)(budget/cheapest.getPrice());
+        Toast.makeText(this, String.format("%d", drinkCount), Toast.LENGTH_SHORT).show();
+
+        leftOver = leftOver - (cheapest.getPrice() * drinkCount);
+
+        resultsView.append("The cheapest is " + cheapest.getName() + " with a total of " + drinkCount);
+//        Integer size = nDrinkList.size();
+//        Toast.makeText(this, size.toString(), Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -165,8 +207,57 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     public void calculateDrunkest() {
+        resultsView.setText("");
+        budget = Double.parseDouble(budgetText);
+        double leftOver = budget;
+        int drinkCount = 0;
+        Beverage cheapest = null;
+        Beverage toCheck = null;
+        determineType();
+        nDrinkList = nDBHelper.getListDrinksByType(selectedType);
+        if(nDrinkList.size() != 0) {
+            if(String.valueOf(nDrinkList.get(0).getPrice()) == null) {
+                nDrinkList.get(0).setPrice(4.50);
+            }
+            cheapest = nDrinkList.get(0);
+        }
+        for( int i = 1; i < nDrinkList.size(); i++ ) {
+            if(nDrinkList.get(i) == null) {
+                return;
+            }
+            if(String.valueOf(nDrinkList.get(i).getPrice()) == null) {
+                nDrinkList.get(i).setPrice(4.50);
+            }
+            toCheck = nDrinkList.get(i);
+            if( toCheck.getPrice() < cheapest.getPrice() ) {
+                cheapest = toCheck;
+            }
 
+        }
+
+        drinkCount = (int)(budget/cheapest.getPrice());
+        Toast.makeText(this, String.format("%d", drinkCount), Toast.LENGTH_SHORT).show();
+
+        leftOver = leftOver - (cheapest.getPrice() * drinkCount);
+
+        resultsView.append("The cheapest is " + cheapest.getName() + " with a total of " + drinkCount);
     }
+
+    public void determineType() {
+        if(String.valueOf(selectedDrink) == null) {
+            System.out.println("Something was null");
+        }
+        for( int i = 0; i < types.length; i ++ ) {
+            if(String.valueOf(selectedDrink).equalsIgnoreCase(names[i])) {
+                selectedType = types[i];
+//                Toast.makeText(this, selectedType, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /* ************************************************ */
+    /* Methods used to assist GUI items of the Activity */
+    /* ************************************************ */
 
     /**
      * This method will add items to the drink spinner
@@ -248,6 +339,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /* ***************************************** */
+    /*        Methods used by the database       */
+    /* ***************************************** */
 
     /**
      * This method copies the database into memory
@@ -276,6 +370,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* ***************************************** */
+    /* Methods below are used for the menu items */
+    /* ***************************************** */
 
     /**
      * Create the menu object
@@ -306,6 +403,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
+            startActivity(new Intent(getApplicationContext(), AboutActivity.class));
             return true;
         }
 

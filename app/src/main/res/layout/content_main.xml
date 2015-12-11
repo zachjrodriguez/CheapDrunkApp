@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/results"
             android:layout_gravity="center_horizontal"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:layout_marginTop="4dp"
             android:textColor="@color/colorBlack"
             android:background="@color/colorAccent"/>

@@ -93,13 +93,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public List getListDrinksByType(String type) {
         Beverage beverage;
-        type = "'B'";
         List<Beverage> drinkList = new ArrayList<>();
         openDatabase();
         Cursor cursor = nDatabase.rawQuery("SELECT * FROM PRODUCT WHERE TYPE =" + type, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
-            beverage = new Beverage(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getDouble(3), cursor.getDouble(4));
+            Double price = cursor.getDouble(4);
+            if(cursor.isNull(4)) {
+                price = 4.50;
+            }
+            beverage = new Beverage(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getDouble(3), price);
             drinkList.add(beverage);
             cursor.moveToNext();
         }
